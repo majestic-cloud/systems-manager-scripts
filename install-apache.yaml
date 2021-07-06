@@ -1,0 +1,18 @@
+---
+schemaVersion: '2.2'
+description: YAML template which will install Apache on an EC2 instance
+parameters: 
+  InitialWebText:
+    type: "String"
+    description: "Initial message"
+    default: "Welcome to instance "
+mainSteps:
+- action: aws:runShellScript
+  name: configureApache
+  inputs:
+    runCommand:
+    - 'sudo yum update -y'
+    - 'sudo yum install -y httpd'
+    - 'sudo systemctl start httpd.service'
+    - 'sudo systemctl enable httpd.service'
+    - 'echo "{{InitialWebText}} $(hostname -f) , running Apache, installed with AWS Systems Manager" > /var/www/html/index.html'
